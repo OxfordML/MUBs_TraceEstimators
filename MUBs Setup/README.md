@@ -1,8 +1,8 @@
 # Installation instructions
 
-Open terminal
-CD into this directory
-python setup.py install
+Open terminal,
+CD into this directory,
+`python setup.py install'
 
 
 Uses only standard libraries in C++:
