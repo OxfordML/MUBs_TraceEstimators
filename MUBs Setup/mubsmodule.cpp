@@ -38,31 +38,19 @@ example (PyObject *dummy, PyObject *args)
 
     /*vv* make MUBs random sample *vv*/
 
-    double s = 1.;
     std::vector<std::complex<double> > z(n);
 
     std::complex<double> w;
 
     int i,j;
 
-
-    if (b == n){
-        for(i=0; i<n; i++)
-            z[i] = 0;
-        z[m] = 1.;
-    }
-    else{
-        w = std::complex<double>(0,2*M_PI/n);
-        s = 0.;
+    w = std::complex<double>(0,2*M_PI/n);
 
 
-        for (i=0; i<n; i++){
-            z[i] = exp(w*(i*r - (i*(i+1)/2)*b));
-            s += real(z[i])*real(z[i]) + imag(z[i])*imag(z[i]);
-        } 
+    for (i=0; i<n; i++){
+        z[i] = exp(w*(i*r + ((i+1)*(i+2)/2)*b));
+    } 
 
-        s = sqrt(s);
-    }
 
     /*vv* return MUBs sample *vv*/
 
@@ -70,10 +58,10 @@ example (PyObject *dummy, PyObject *args)
     for (i=0; i<arr1->dimensions[0]; ++i) {
         for (j=0; j<arr1->dimensions[1]; ++j) {
             double *v = (double*)PyArray_GETPTR2(arr1, i, j);
-            *v = (double)real(z[i]/s);
+            *v = (double)real(z[i]/sqrt(n));
 
             double *u = (double*)PyArray_GETPTR2(arr2, i, j);
-            *u = (double)imag(z[i])/s;
+            *u = (double)imag(z[i])/sqrt(n);
         }
     }
 
